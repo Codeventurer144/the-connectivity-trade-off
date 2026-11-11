@@ -1,0 +1,18 @@
+{
+  "as_of": "2026-11-11",
+  "project": "The Connectivity Trade-Off",
+  "description": "Public observations are from operator and statistical disclosures; every customer-level figure is an assumption, not MTN data.",
+  "source_links": {
+    "mtn": "https://doclib.ngxgroup.com/Financial_NewsDocs/48326_MTN_NIGERIA_COMMUNICATIONS_PLC-MTN_NIGERIA_Q3_2026_EARNINGS_RELEASE_CORPORATE_ACTIONS_OCTOBER_2026.pdf",
+    "ncc": "https://ncc.gov.ng/market-data-reports/industry-statistics",
+    "isp": "https://ncc.gov.ng/market-data-reports/internet-service-provider-data",
+    "nbs": "https://microdata.nigerianstat.gov.ng/index.php/catalog/154/related-materials",
+    "un": "https://unstats.un.org/unsd/mbs/app/DataView.aspx?cid=566&p=A&tid=6&yearfrom=1997&yearto=2099",
+    "kenya": "https://tech-ish.com/2026/09/25/starlink-passes-27000-subscribers-in-kenya-and-holds-99-7-of-satellite-internet/"
+  },
+  "definitions": {
+    "mtn_mobile": "94.7 million revenue-generating subscribers per issuer disclosure, September 2026",
+    "ncc_mobile": "104,648,077 active MTN mobile subscriptions per NCC August 2026; non-identical definition",
+    "subscriber_churn": "Not publicly available; synthetic only"
+  }
+}

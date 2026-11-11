@@ -1,0 +1,6 @@
+segment,synthetic_subscribers,monthly_spend_NGN_assumed,monthly_inactivity_assumption,price_elasticity_assumption,monthly_GB_assumed,data_type
+Value prepaid,40000,1600,0.06,1.15,2.1,synthetic
+Everyday data,30000,4100,0.037,0.76,7.4,synthetic
+Heavy mobile,15000,9600,0.023,0.45,25,synthetic
+Home broadband,10000,19500,0.02,0.38,95,synthetic
+SME & enterprise,5000,36500,0.014,0.26,130,synthetic
