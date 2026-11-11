@@ -2,7 +2,7 @@
 
 **Telecommunications Commercial Intelligence | Nigeria | D3.js**
 
-**Dashboard:** [The Connectivity Trade-Off](https://codeventurer144.github.io/the-connectivity-trade-off/) *(link becomes active after the GitHub Pages site is published).*  
+**Dashboard:** [The Connectivity Trade-Off](https://codeventurer144.github.io/the-connectivity-trade-off/)  
 **Research coverage:** 1 June 2024 – 30 September 2026, across datasets with different reporting periods and frequencies.
 
 ## Why I built this
