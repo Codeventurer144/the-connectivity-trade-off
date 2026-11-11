@@ -27,3 +27,15 @@
  .date-pill{font-size:8px;padding:8px 10px}
 }
 @media(max-width:540px){.date-pill{font-size:8px;max-width:150px;text-align:center;line-height:1.3;padding:7px 8px}}
+
+/* Full-width BI workspace: no centered website-style canvas gutters. */
+.main-shell{flex:1;min-width:0;width:0}
+main#content{width:100%;max-width:none;margin:0;padding:18px 16px 26px}
+.topbar{height:64px;padding-inline:16px}
+.page-sub{margin-bottom:16px}
+.kpis{gap:12px;margin:15px 0}
+.grid2,.grid3{gap:12px;margin-top:12px}
+.panel{padding:18px}
+@media(max-width:1180px){main#content{padding:16px 14px 24px}.topbar{padding-inline:14px}}
+@media(max-width:850px){main#content{padding:14px 12px 24px}.topbar{height:62px;padding-inline:12px}}
+@media(max-width:480px){main#content{padding:12px 10px 20px}.panel{padding:15px}}
