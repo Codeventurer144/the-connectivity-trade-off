@@ -39,3 +39,142 @@ main#content{width:100%;max-width:none;margin:0;padding:18px 16px 26px}
 @media(max-width:1180px){main#content{padding:16px 14px 24px}.topbar{padding-inline:14px}}
 @media(max-width:850px){main#content{padding:14px 12px 24px}.topbar{height:62px;padding-inline:12px}}
 @media(max-width:480px){main#content{padding:12px 10px 20px}.panel{padding:15px}}
+
+
+
+/* LANDSCAPE WORKSPACE — fixed-height analytical canvas modeled on the Credit Trade-Off.
+   All six views are kept in a single browser viewport; no page-level vertical scroll. */
+html,body{height:100%;width:100%;overflow:hidden}
+body{font-size:12px}
+.shell{height:100dvh;min-height:0;width:100%;display:block;overflow:hidden}
+.main-shell{height:100%;max-height:100dvh;width:100%;display:flex;flex-direction:column;min-width:0;overflow:hidden}
+.topbar{flex:0 0 48px;height:48px;padding:0 12px;min-height:0;gap:12px;background:#fff}
+.header-mark{display:flex;align-items:baseline;gap:16px;min-width:0}
+.header-mark strong{font:800 17px Manrope,sans-serif;letter-spacing:-.45px;color:var(--dark);white-space:nowrap}
+.header-mark small{font-size:10px;font-weight:600;color:#72849a;white-space:nowrap}
+.topright{margin-left:auto;gap:10px;white-space:nowrap}
+.source-chip,.date-pill{font-size:9px;padding:6px 10px;border-radius:3px}
+.workspace-tabs{flex:0 0 39px;min-height:39px;background:#f9fbff;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;border-bottom:1px solid var(--line);padding:0 8px;overflow:hidden}
+.workspace-tabs .nav-item{height:39px;min-width:0;display:flex;justify-content:center;align-items:center;gap:6px;border:0;border-bottom:3px solid transparent;border-radius:0;background:transparent;box-shadow:none;padding:2px 7px;color:#496582;font-size:11px;white-space:nowrap;font-weight:750;text-align:center}
+.workspace-tabs .nav-item:hover{background:#eaf3ff;color:var(--dark)}
+.workspace-tabs .nav-item.active{background:#eaf2ff;color:#15549c;border-bottom-color:#2277cb;box-shadow:none}
+.workspace-tabs .nav-item .num{font-size:11px;opacity:1;margin:0;color:inherit}
+main#content{width:100%;max-width:none;margin:0;padding:8px 10px 10px;display:grid;gap:7px;flex:1;min-height:0;overflow:hidden;align-content:stretch}
+main#content>*{min-height:0;min-width:0;margin:0}
+.page-heading{display:flex;flex-direction:column;justify-content:center;gap:4px;overflow:hidden}
+.page-heading .eyebrow{font-size:10px;letter-spacing:0;margin:0;line-height:1.1}
+.page-headline-row{display:flex;gap:18px;align-items:baseline;min-width:0}
+.page-heading .page-title{font:800 19px Manrope,sans-serif;letter-spacing:-.6px;white-space:nowrap;line-height:1.2}
+.page-heading .page-sub{font-size:10px;max-width:none;margin:0;line-height:1.35;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kpis{gap:7px;grid-template-columns:repeat(4,minmax(0,1fr));margin:0}
+.kpi{min-width:0;min-height:0;padding:9px 12px;border-radius:5px;box-shadow:none;display:flex;flex-direction:column;justify-content:center}
+.kpi-label{font-size:10px;line-height:1.2}
+.kpi-value{font-size:21px;letter-spacing:-.6px;margin:3px 0;line-height:1.05}
+.kpi-note{font-size:9px;line-height:1.15}
+.grid2,.grid3,.sim-layout{gap:8px;margin:0;min-height:0;min-width:0}
+.grid2{grid-template-columns:1.1fr 1fr}
+.grid2.grid-half{grid-template-columns:1fr 1fr}
+.grid3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.panel{display:flex;flex-direction:column;min-width:0;min-height:0;overflow:hidden;border-radius:5px;box-shadow:none;padding:10px 12px}
+.panel-head{align-items:flex-start;gap:4px;margin:0 0 5px;flex:0 0 auto}
+.panel-title{font:800 12px Manrope,sans-serif;margin:0 0 2px;line-height:1.2}
+.panel-sub{font-size:9px;line-height:1.2}
+.tag{font-size:8px;padding:3px 5px;border-radius:3px;letter-spacing:0}
+.info-btn{width:19px;height:19px;line-height:17px;font-size:11px;flex-shrink:0}
+.head-right{gap:5px}
+.panel .chart{flex:1 1 0;min-height:0!important;overflow:hidden;height:auto;width:100%}
+.panel .chart svg,.chart>svg{height:100%!important;max-height:none;width:100%;overflow:hidden}
+.panel-source{flex:0 0 auto;font-size:8px;line-height:1.1;padding-top:4px;margin-top:4px}
+.panel-source a{font-size:inherit}
+.focus-box{display:flex;min-height:0;margin:0;padding:9px 15px;border-radius:5px;gap:16px;overflow:hidden}
+.focus-box h2{font-size:14px;line-height:1.15;margin:0 0 3px}
+.focus-box p{font-size:10px;line-height:1.2;max-width:none;margin:0}
+.focus-box .focus-number{font-size:26px;letter-spacing:-.8px}
+.focus-tiny{font-size:9px;margin-top:1px}
+.callout{font-size:9px;line-height:1.25;padding:6px 8px;margin:5px 0 0;border-left-width:2px}
+.note{font-size:9px;line-height:1.2;margin:6px 0 0}
+.metric-row{padding:6px 0;font-size:10px;line-height:1.2;gap:6px}
+.metric-row b{font-size:11px;white-space:nowrap}
+.stat-brief{font-size:9px;line-height:1.3;padding-top:5px;margin-top:5px}
+.disclaimer{display:none}
+.view-overview{grid-template-rows:45px 68px 66px minmax(0,1.05fr) minmax(0,.95fr)}
+.view-afford,.view-competition{grid-template-rows:45px 70px minmax(0,1fr) minmax(0,1fr)}
+.view-customer{grid-template-rows:45px 70px minmax(0,1.18fr) minmax(0,.82fr)}
+.view-customer>.panel,.view-action>.panel{min-height:0}
+.view-simulator{grid-template-rows:45px 29px minmax(0,1fr)}
+.view-action{grid-template-rows:45px 72px 125px minmax(0,.92fr) minmax(0,1.08fr) 30px}
+.sim-banner{margin:0;padding:5px 10px;border-radius:4px;font-size:10px;line-height:1.2;align-items:center}
+.sim-layout{grid-template-columns:255px minmax(0,1fr);height:100%}
+.sim-controls{padding:9px 12px;overflow:hidden}
+.sim-controls .panel-head{margin-bottom:4px}
+.control{margin:7px 0 10px}
+.control label{font-size:10px;margin-bottom:4px}
+.control label strong{font-size:12px}
+.control input[type=range]{height:17px}
+.control select{padding:6px;border-radius:4px;font-size:11px}
+.slider-minmax{font-size:8px;margin-top:0}
+.sim-controls .btn{padding:5px 9px;font-size:10px}
+.sim-controls .note{font-size:9px;line-height:1.25;margin-top:5px}
+.sim-main{display:grid;grid-template-rows:86px minmax(0,1.18fr) minmax(0,.82fr);gap:8px;min-height:0;overflow:hidden}
+.sim-main>.panel{margin:0}
+.sim-top{gap:8px}
+.sim-top .scenario-card{min-height:0;padding:10px;border-radius:5px}
+.scenario-card .name{font-size:9px}
+.sim-top .scenario-card .value{font-size:19px;margin:2px 0}
+.scenario-card .delta,.scenario-card .small{font-size:9px;line-height:1.15;margin-top:1px}
+.sim-main .grid2{min-height:0}
+.sim-main .metric-row{padding:3px 0}
+.break-even{padding:7px;margin:4px 0;font-size:10px;line-height:1.3}
+.break-even strong{font-size:12px}
+.afford-num{font-size:22px;line-height:1.1}
+.budget-grid{gap:6px}
+.budget-grid label{font-size:9px}
+.budget-grid input{padding:5px;margin-top:4px;font-size:11px;border-radius:4px}
+.budget-result{padding:7px;margin-top:7px;border-radius:5px}
+.budget-result .big-figure{font-size:22px;margin:1px 0}
+.budget-label{font-size:9px}
+.budget-track{margin:5px 0;height:7px}
+.budget-values{margin-top:4px}
+.budget-values b{font-size:13px}
+.budget-values span{font-size:9px}
+.exposure{padding:6px 0}
+.exposure strong{font-size:10px}
+.exposure p{font-size:9px;line-height:1.2;margin:2px 0 0}
+.action-grid{gap:8px;min-height:0}
+.action{padding:9px 10px;border-radius:5px;overflow:hidden;min-height:0}
+.action h3{font-size:12px;margin:4px 0 0}
+.action p{font-size:9px;line-height:1.23;margin:3px 0}
+.action .stack-note{font-size:9px;line-height:1.16;margin-top:6px;padding-top:5px}
+.model-spec p{font-size:9px;line-height:1.22;margin:0 0 5px}
+.view-action .metric-row{padding:4px 0}
+.view-action .callout{font-size:9px;margin-top:5px}
+.source-table{font-size:9px;line-height:1.15}
+.source-table th,.source-table td{padding:3px 5px;line-height:1.2}
+.table-scroll{min-height:0;overflow:hidden}
+.table-scroll table{min-width:0;width:100%}
+.download-row{margin:0;gap:7px}
+.download-row .btn{padding:6px 9px;font-size:10px;border-radius:4px}
+.btn{border-radius:4px}
+@media(max-height:730px){
+ .topbar{height:40px;flex-basis:40px}.workspace-tabs{height:34px;min-height:34px;flex-basis:34px}.workspace-tabs .nav-item{height:34px}
+ main#content{padding:6px 8px;gap:5px}
+ .view-overview{grid-template-rows:38px 58px 58px minmax(0,1fr) minmax(0,1fr)}
+ .view-afford,.view-competition,.view-customer{grid-template-rows:38px 60px minmax(0,1fr) minmax(0,1fr)}
+ .view-simulator{grid-template-rows:38px 26px minmax(0,1fr)}
+ .view-action{grid-template-rows:38px 63px 104px minmax(0,.9fr) minmax(0,1.1fr) 28px}
+ .kpi{padding:6px 9px}.kpi-value{font-size:18px}.panel{padding:7px 9px}.panel-head{margin-bottom:3px}
+ .focus-box{padding:6px 10px}.focus-box .focus-number{font-size:22px}
+ .sim-main{grid-template-rows:76px minmax(0,1.1fr) minmax(0,.9fr)}.sim-top .scenario-card{padding:6px 8px}.sim-top .scenario-card .value{font-size:16px}
+ .control{margin:5px 0 7px}.sim-controls .note{font-size:8px}
+}
+@media(max-width:1000px){
+ html,body{overflow-x:auto;overflow-y:hidden}
+ .shell{min-width:1050px}
+ .topbar,.workspace-tabs,main#content{min-width:1050px}
+}
+
+/* Keep contextual metric and research panels fully visible at laptop heights. */
+.view-overview>.grid-half .metric-row{padding:4px 0}
+.view-overview>.grid-half .callout{padding:5px 8px;font-size:9px;line-height:1.2}
+.view-action .grid-half .metric-row{padding:3px 0}
+@media(max-height:730px){.view-overview>.grid-half .metric-row{padding:3px 0}.view-action .grid-half .metric-row{padding:2.5px 0}}
