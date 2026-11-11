@@ -58,30 +58,22 @@ const safe=(s)=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&g
 const src=(items)=>`<div class="panel-source">SOURCE: ${items.map(([name,url])=>`<a href="${url}" target="_blank" rel="noopener noreferrer">${name} ↗</a>`).join(' · ')}</div>`;
 const panel=(title,sub,body,opts={})=>`<section class="panel ${opts.extra||''}"><div class="panel-head"><div><h2 class="panel-title">${title}</h2><p class="panel-sub">${sub}</p></div><div class="head-right">${opts.tag?`<span class="tag ${opts.tagtype||''}">${opts.tag}</span>`:''}<button class="info-btn" aria-label="About ${safe(title)}" data-tip="${safe(opts.tip||sub)}">ⓘ</button></div></div>${body}${opts.source?src(opts.source):''}</section>`;
 const kpi=(name,val,note,type='')=>`<article class="kpi"><div class="kpi-label">${name}</div><div class="kpi-value">${val}</div><div class="kpi-note ${type}">${note}</div></article>`;
-const headline=(step,title,sub)=>`<div class="eyebrow">${Number(step)}.) ${pages.find(p=>p.num===step).name}</div><h1 class="page-title">${title}</h1><p class="page-sub">${sub}</p>`;
+const headline=(step,title,sub)=>`<header class="page-heading"><div class="eyebrow">${Number(step)}.) ${pages.find(p=>p.num===step).name}</div><div class="page-headline-row"><h1 class="page-title">${title}</h1><p class="page-sub" title="${safe(sub)}">${sub}</p></div></header>`;
 const tag=(name,cls='')=>`<span class="tag ${cls}">${name}</span>`;
 const info=(body)=>`<div class="callout">${body}</div>`;
 const select=(id,options,value)=>`<select id="${id}" aria-label="${id}">${options.map(o=>`<option value="${o[0]}" ${String(o[0])===String(value)?'selected':''}>${o[1]}</option>`).join('')}</select>`;
 const chartBox=(id,min=250)=>`<div class="chart" id="${id}" style="min-height:${min}px"></div>`;
 const metric=(label,value)=>`<div class="metric-row"><span>${label}</span><b>${value}</b></div>`;
 const statusNotice=`<div class="disclaimer"><span class="status-key actual">OBSERVED</span> Public-source metrics <span class="status-key synthetic">MODELED</span> Synthetic customer scenarios. No private MTN customer data is used.</div>`;
-let sidebarIsOpen=false;
-function setSidebar(open){
- sidebarIsOpen=Boolean(open);
- document.querySelector('.shell').classList.toggle('nav-collapsed',!sidebarIsOpen);
- document.querySelector('.sidebar').classList.toggle('open',sidebarIsOpen);
- document.getElementById('sidebar').inert=!sidebarIsOpen;
- document.getElementById('menuBtn').setAttribute('aria-expanded',String(sidebarIsOpen));
- document.getElementById('navShade').classList.toggle('visible',sidebarIsOpen);
-}
-function nav(){document.getElementById('nav').innerHTML=pages.map(p=>`<button class="nav-item ${state.page===p.id?'active':''}" data-page="${p.id}" aria-current="${state.page===p.id?'page':'false'}"><span>${p.name}</span><span class="num">${p.num}</span></button>`).join('');}
+function nav(){document.getElementById('nav').innerHTML=pages.map(p=>`<button class="nav-item ${state.page===p.id?'active':''}" data-page="${p.id}" aria-current="${state.page===p.id?'page':'false'}"><span class="num">${Number(p.num)}.)</span><span>${p.name}</span></button>`).join('');}
 function render(){
  nav();
  const views={overview,afford,customer,simulator,competition,action};
- document.getElementById('content').innerHTML=views[state.page]() + statusNotice;
+ document.getElementById('content').className='view view-'+state.page;
+ document.getElementById('content').innerHTML=views[state.page]();
  drawCharts();
 }
-function goto(page){if(!pages.some(p=>p.id===page))return;state.page=page;if(window.innerWidth<=850)setSidebar(false);location.hash=page;render();window.scrollTo({top:0,behavior:'instant'});}
+function goto(page){if(!pages.some(p=>p.id===page))return;state.page=page;location.hash=page;render();}
 function overview(){
  let delta=D.financial.reduce((a,d)=>a+d.now-d.prior,0);
  return headline('01','Commercial performance','Strong reported growth provides the context. The commercial question is where affordability or competition could put future demand at risk.')+
@@ -141,7 +133,7 @@ function action(){
  ['02','Expand home broadband intelligence','Segment high-consumption homes and small businesses. Test fibre / fixed wireless offers where suitable infrastructure is available.','MTN reports FTTH at approximately 13% of network data traffic.'],
  ['03','Make quality visible to pricing teams','Link trouble tickets, outage frequency and coverage quality to revenue retention before testing tariff changes.','Quality-driven switching is plausible, not established by public figures.']
  ].map(([n,title,desc,ev])=>`<div class="action"><span class="tag">TEST ${n}</span><h3>${title}</h3><p>${desc}</p><div class="stack-note"><b>Evidence status:</b> ${ev}</div></div>`).join('')}</div>`+
- `<div class="grid2 grid-half">${panel('Research controls','How this project handles conflicting measures',`<div class="metric-list">${metric('MTN subscriber series','MTN reporting definition')}${metric('NCC mobile subscribers','NCC operator returns')}${metric('Financial values','9M26 vs 9M25')}${metric('NBS price index','Rebased series only')}${metric('Modeled churn','Synthetic, not fitted')}${metric('Nigeria state heatmap','Deferred; no valid state churn data')}</div>${info('<b>Why no Nigerian state heatmap yet?</b> Producing state-level “MTN churn” without state-level observations would be misleading. This can be added with verified geography and suitable data.')}`,{tag:'DATA GOVERNANCE',tip:'Disparate regulatory and company customer definitions are presented separately. Synthetic cohorts are never described as observed subscriber-level records.'})}${panel('Model specification','Reproducible, interpretable and deliberately simplified',`<div class="model-spec"><p><strong>Price response:</strong> Purchase volume per active customer changes with a constant-elasticity demand curve, with different scenario multipliers.</p><p><strong>Inactivity:</strong> Monthly attrition is a synthetic segment baseline plus a price/inflation shock. Intervention reduces modeled attrition by up to 55% at full intensity.</p><p><strong>Revenue:</strong> Period revenue sums active customers × segment spend × tariff factor × consumption response, less an illustrative retention campaign cost.</p><p><strong>Exclusions:</strong> New customer acquisition, migration between segments, regulatory response, VAT, network unit costs and package cannibalization.</p></div>`,{tag:'SIMULATED',tagtype:'amber',tip:'No calibration to MTN customer-level churn, experiments or causal estimates. The model is for stress-testing assumptions and inviting better data.'})}</div>`+
+ `<div class="grid2 grid-half">${panel('Research controls','How this project handles conflicting measures',`<div class="metric-list">${metric('MTN subscriber series','MTN reporting definition')}${metric('NCC mobile subscribers','NCC operator returns')}${metric('Financial values','9M26 vs 9M25')}${metric('NBS price index','Rebased series only')}${metric('Modeled churn','Synthetic, not fitted')}${metric('Nigeria state heatmap','Deferred; no valid state churn data')}</div>`,{tag:'DATA GOVERNANCE',tip:'Disparate regulatory and company customer definitions are presented separately. Synthetic cohorts are never described as observed subscriber-level records.'})}${panel('Model specification','Reproducible, interpretable and deliberately simplified',`<div class="model-spec"><p><strong>Price response:</strong> Purchase volume per active customer changes with a constant-elasticity demand curve, with different scenario multipliers.</p><p><strong>Inactivity:</strong> Monthly attrition is a synthetic segment baseline plus a price/inflation shock. Intervention reduces modeled attrition by up to 55% at full intensity.</p><p><strong>Revenue:</strong> Period revenue sums active customers × segment spend × tariff factor × consumption response, less an illustrative retention campaign cost.</p><p><strong>Exclusions:</strong> New customer acquisition, migration between segments, regulatory response, VAT, network unit costs and package cannibalization.</p></div>`,{tag:'SIMULATED',tagtype:'amber',tip:'No calibration to MTN customer-level churn, experiments or causal estimates. The model is for stress-testing assumptions and inviting better data.'})}</div>`+
  `${panel('Evidence register','Original sources, measurement periods and limitations',`<div class="table-scroll"><table class="source-table"><thead><tr><th>Evidence</th><th>Reference period</th><th>How it is used</th><th>Link</th></tr></thead><tbody>${[
  ['MTN Nigeria earnings','9M 2025 / 9M 2026','Revenue, users, usage and FTTH',SOURCE.mtn],
  ['NCC mobile operator data','August 2026','Operator shares (NCC definition)',SOURCE.ncc],
@@ -196,7 +188,7 @@ function drawCharts(){
 }
 function initSvg(id,height=265,m={top:16,right:22,bottom:38,left:42}){
  const root=document.getElementById(id);if(!root||typeof d3==='undefined')return null;
- root.innerHTML='';const width=Math.max(280,root.clientWidth||540);const svg=d3.select(root).append('svg').attr('viewBox',`0 0 ${width} ${height}`).attr('role','img').attr('aria-label',root.closest('.panel')?.querySelector('h2')?.textContent||'Data visualization');
+ root.innerHTML='';const width=Math.max(220,root.clientWidth||540);height=Math.max(105,Math.min(height,Math.round(root.clientHeight)||height));const svg=d3.select(root).append('svg').attr('viewBox',`0 0 ${width} ${height}`).attr('role','img').attr('aria-label',root.closest('.panel')?.querySelector('h2')?.textContent||'Data visualization');
  return {root,svg,width,height,m,W:width-m.left-m.right,H:height-m.top-m.bottom,g:svg.append('g').attr('transform',`translate(${m.left},${m.top})`)};
 }
 function axes(a,x,y,opts={}){
@@ -210,15 +202,15 @@ function barsColor(i){return ['#174f9e','#3d84d4','#79b0e6','#b3d2f1','#d59c56']
 function drawRevenueMix(){
  const mobile=(document.getElementById('revMix').clientWidth||540)<430;
  const a=initSvg('revMix',mobile?372:265,{top:10,right:10,bottom:10,left:10});if(!a)return;
- const total=D.financial.reduce((sum,d)=>sum+d.now,0), cx=mobile?a.width/2:Math.min(a.width*.29,150),cy=mobile?108:125,r=mobile?90:97;
- const arc=d3.arc().innerRadius(59).outerRadius(r);
+ const total=D.financial.reduce((sum,d)=>sum+d.now,0),stack=a.width<340, r=Math.min(95,Math.max(45,(a.height-10)/2-8)), cx=stack?a.width/2:Math.min(a.width*.24,130),cy=stack?r+6:a.height/2;
+ const arc=d3.arc().innerRadius(r*.60).outerRadius(r);
  const pie=d3.pie().sort(null).value(d=>d.now);
  a.svg.append('g').attr('transform',`translate(${cx},${cy})`).selectAll('path').data(pie(D.financial)).enter().append('path').attr('d',arc).attr('fill',(d,i)=>barsColor(i)).attr('stroke','#fff').attr('stroke-width',2).on('mousemove',(ev,d)=>tip(ev,`${d.data.name}: ₦${fmt(d.data.now,1)}bn (${fmt(d.data.now/total*100,1)}%)`)).on('mouseleave',hideTip);
- a.svg.append('text').attr('x',cx).attr('y',cy-4).attr('text-anchor','middle').attr('font-weight',800).attr('font-size',20).attr('fill','#173c6c').text('₦4.59tn');
+ a.svg.append('text').attr('x',cx).attr('y',cy-4).attr('text-anchor','middle').attr('font-weight',800).attr('font-size',Math.max(12,Math.min(20,r*.24))).attr('fill','#173c6c').text('₦4.59tn');
  a.svg.append('text').attr('x',cx).attr('y',cy+15).attr('text-anchor','middle').attr('font-size',10).attr('fill','#70859d').text('service revenue');
- const start=mobile?30:Math.max(a.width*.54,cx+110);
- const lg=a.svg.append('g').attr('transform',`translate(${start},${mobile?218:48})`);
- D.financial.forEach((d,i)=>{let y=i*(mobile?28:39);lg.append('circle').attr('cx',0).attr('cy',y).attr('r',5).attr('fill',barsColor(i));lg.append('text').attr('x',12).attr('y',y+4).attr('font-size',11).attr('fill','#536c87').text(d.name);lg.append('text').attr('x',mobile?a.width-90:12).attr('y',mobile?y+4:y+17).attr('text-anchor',mobile?'end':'start').attr('font-size',10).attr('fill','#173e73').attr('font-weight',800).text(`${fmt(d.now/total*100,1)}%`);});
+ const start=stack?16:Math.max(a.width*.46,cx+r+12);
+ const lg=a.svg.append('g').attr('transform',`translate(${start},${stack?2*r+15:Math.max(9,a.height/2-62)})`);
+ D.financial.forEach((d,i)=>{let y=i*Math.min(28,Math.max(18,(a.height-22)/5));lg.append('circle').attr('cx',0).attr('cy',y).attr('r',4).attr('fill',barsColor(i));lg.append('text').attr('x',11).attr('y',y+4).attr('font-size',10).attr('fill','#536c87').text(`${d.name} · ${fmt(d.now/total*100,1)}%`);});
 }
 function drawRevenueBars(){
  const a=initSvg('revBars',265,{top:10,right:15,bottom:53,left:51});if(!a)return;
@@ -346,13 +338,6 @@ function exportPublic(){
 }
 function bind(){
  document.getElementById('nav').addEventListener('click',e=>{let btn=e.target.closest('[data-page]');if(btn)goto(btn.dataset.page);});
- document.getElementById('menuBtn').addEventListener('click',()=>setSidebar(!sidebarIsOpen));
- document.getElementById('navShade').addEventListener('click',()=>setSidebar(false));
- // Dismiss the page navigation when someone clicks away from it, on any screen size.
- document.addEventListener('pointerdown',e=>{
-  if(sidebarIsOpen&&!document.getElementById('sidebar').contains(e.target)&&!document.getElementById('menuBtn').contains(e.target))setSidebar(false);
- });
- document.addEventListener('keydown',e=>{if(e.key==='Escape'&&sidebarIsOpen){setSidebar(false);document.getElementById('menuBtn').focus();}});
  document.getElementById('content').addEventListener('click',e=>{
   const b=e.target.closest('button');if(!b)return;
   if(b.dataset.page)goto(b.dataset.page);
@@ -381,10 +366,4 @@ function bind(){
  let resizeTimer;window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(drawCharts,130);});
 }
 const hash=location.hash.slice(1);if(pages.some(p=>p.id===hash))state.page=hash;
-setSidebar(window.innerWidth>850);
-let wasMobile=window.innerWidth<=850;
-window.addEventListener('resize',()=>{
- const isMobile=window.innerWidth<=850;
- if(isMobile!==wasMobile){wasMobile=isMobile;setSidebar(!isMobile);}
-});
 bind();render();
